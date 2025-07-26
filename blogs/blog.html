@@ -1,39 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blogs</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css/normalize.css" />
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
   <style>
     body {
+      margin: 0;
       background-color: #000;
       color: white;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 40px;
     }
 
-    a:link, a:visited {
-      color: #00ffff; 
+    .intro {
+      font-size: 20px;
+      margin-bottom: 40px;
+    }
+
+    .card {
+      background-color: #111;
+      border: 1px solid #333;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      max-width: 600px;
+      transition: transform 0.2s ease;
+    }
+
+    .card:hover {
+      transform: scale(1.02);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .card-header h2 {
+      color: #00ffff;
+      font-size: 22px;
+      margin: 0;
+    }
+
+    .card-header .date {
+      color: #aaa;
+      font-size: 14px;
+      font-family: monospace;
+    }
+
+    .card p {
+      font-size: 16px;
+      color: #ccc;
+    }
+
+    .read-link {
+      color: #00ffff;
       text-decoration: none;
-      margin-right: 20px;
       font-family: monospace;
       font-size: 15px;
     }
 
-    a:hover {
+    .read-link:hover {
       text-decoration: underline;
     }
 
-    p {
-      font-size: 20px;
-      max-width: 800px;
+    #markdown-viewer {
+      margin-top: 40px;
+      width: 100%;
+      padding: 0;
+      display: none;
+    }
+
+    #markdown-viewer h1, h2, h3 {
+      color: #00ffff;
+    }
+
+    #markdown-viewer p, li {
+      color: white;
+      font-size: 18px;
       line-height: 1.6;
+      max-width: 900px;
     }
   </style>
-
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Blogs</title>
 </head>
 <body>
-  <div style="margin-left: 100px; margin-top: 50px;">
-    <p>Blogs — here I document my learnings, give my opinions and sometimes rant.</p>
+  <div class="intro">Blogs — here I document my learnings, give my opinions and sometimes rant.</div>
+
+  <div class="card">
+    <div class="card-header">
+      <h2>My experience with linux distros</h2>
+      <span class="date">26/07/2025</span>
+    </div>
+    <p>A yap about my experience with linux distros and various DEs.....</p>
+    <a href="#" class="read-link" onclick="loadMarkdown('yapubuntu.md')">Read More →</a>
   </div>
+
+  <div id="markdown-viewer"></div>
+
+  <script>
+    function loadMarkdown(file) {
+      fetch(file)
+        .then(response => response.text())
+        .then(markdown => {
+          document.querySelector(".card").style.display = "none";
+          document.querySelector(".intro").style.display = "none";
+          const viewer = document.getElementById("markdown-viewer");
+          viewer.style.display = "block";
+          viewer.innerHTML = marked.parse(markdown);
+        })
+        .catch(err => {
+          document.getElementById("markdown-viewer").innerHTML = "<p>Error loading blog content.</p>";
+        });
+    }
+  </script>
 </body>
 </html>
